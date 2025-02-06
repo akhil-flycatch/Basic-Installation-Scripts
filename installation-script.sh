@@ -77,6 +77,7 @@ apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker
 usermod -aG docker "$USERNAME"
 
 # Install Docker Desktop
+wget -O docker-desktop-amd64.deb "https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb"
 apt-get install -y ./docker-desktop-amd64.deb
 
 # Enable and start Docker Desktop service
