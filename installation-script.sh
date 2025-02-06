@@ -41,7 +41,7 @@ else
 fi
 
 # Install base software
-apt install -y flatpak net-tools htop git docker.io vim git curl
+apt install -y flatpak net-tools htop git docker.io vim curl
 
 # Add Flatpak repository
 add-apt-repository ppa:flatpak/stable -y
