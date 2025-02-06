@@ -78,6 +78,7 @@ usermod -aG docker "$USERNAME"
 
 # Install Docker Desktop
 wget -O docker-desktop-amd64.deb "https://desktop.docker.com/linux/main/amd64/docker-desktop-amd64.deb"
+chown $USER:$USER ./docker-desktop-amd64.deb
 apt-get install -y ./docker-desktop-amd64.deb
 
 # Enable and start Docker Desktop service
