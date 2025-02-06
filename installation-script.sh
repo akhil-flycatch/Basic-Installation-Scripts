@@ -41,7 +41,7 @@ else
 fi
 
 # Install base software
-apt install -y flatpak net-tools htop git docker.io vim curl
+apt install -y flatpak net-tools htop git ca-certificates vim curl
 
 # Add Flatpak repository
 add-apt-repository ppa:flatpak/stable -y
@@ -52,11 +52,39 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 # Install applications using Flatpak
 flatpak install -y flathub com.google.Chrome
 flatpak install -y flathub com.brave.Browser
-flatpak install -y flathub org.mozilla.firefox
 flatpak install -y flathub io.dbeaver.DBeaverCommunity
 flatpak install -y flathub com.getpostman.Postman
 flatpak install -y flathub com.obsproject.Studio
+flatpak install -y flathub com.visualstudio.code
+flatpak install flathub com.jetbrains.IntelliJ-IDEA-Community
+flatpak install flathub com.jetbrains.PyCharm-Community
 flatpak install -y flathub com.github.tchx84.Flatseal
+
+# Install Docker using official method
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt update
+apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Add current user to Docker group
+usermod -aG docker "$USERNAME"
+
+# Install Docker Desktop
+apt-get install -y ./docker-desktop-amd64.deb
+
+# Enable and start Docker Desktop service
+systemctl --user start docker-desktop
+systemctl --user enable docker-desktop
+
+#removing the docker-desktop installation file
+rm -f docker-desktop-amd64.deb
 
 echo "Base software installation completed. Please restart your system."
 
